@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Question · Spring AI</title>
+    <script>
+        try {
+            var savedTheme = localStorage.getItem("interview.theme");
+            if (savedTheme === "light" || savedTheme === "dark") document.documentElement.dataset.theme = savedTheme;
+        } catch (error) {}
+    </script>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1b33'/%3E%3Cpath d='M9 23V9h5.2a4.2 4.2 0 0 1 0 8.4H9' fill='none' stroke='%2360a5fa' stroke-width='2'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="/vendor/highlight.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-question">
+<a class="skip" href="#main">Skip to content</a>
+<div class="app-shell">
+<aside class="sidebar" id="sidebar">
+    <a class="brand" href="/">
+        <span class="mark">AI</span>
+        <div>
+            <strong>Spring AI</strong>
+            <span>Interview questions</span>
+        </div>
+    </a>
+    <nav aria-label="Library">
+        <a class="nav-link" href="/">Dashboard</a>
+        <p class="nav-label">Topics</p>
+        <a class="nav-link" href="/?topic=" data-topic=""><span>All questions</span><span class="count" data-count="all">0</span></a>
+        <a class="nav-link" href="/?topic=ChatClient" data-topic="ChatClient"><span>ChatClient</span><span class="count" data-count="ChatClient">0</span></a>
+        <a class="nav-link" href="/?topic=Advisors" data-topic="Advisors"><span>Advisors</span><span class="count" data-count="Advisors">0</span></a>
+        <a class="nav-link" href="/?topic=RAG" data-topic="RAG"><span>RAG</span><span class="count" data-count="RAG">0</span></a>
+        <a class="nav-link" href="/?topic=Vector%20stores" data-topic="Vector stores"><span>Vector stores</span><span class="count" data-count="Vector stores">0</span></a>
+        <a class="nav-link" href="/?topic=Tools" data-topic="Tools"><span>Tools</span><span class="count" data-count="Tools">0</span></a>
+        <a class="nav-link" href="/?topic=Structured%20output" data-topic="Structured output"><span>Structured output</span><span class="count" data-count="Structured output">0</span></a>
+        <a class="nav-link" href="/?topic=Memory" data-topic="Memory"><span>Memory</span><span class="count" data-count="Memory">0</span></a>
+        <a class="nav-link" href="/?topic=Evaluation" data-topic="Evaluation"><span>Evaluation</span><span class="count" data-count="Evaluation">0</span></a>
+        <a class="nav-link" href="/?topic=MCP" data-topic="MCP"><span>MCP</span><span class="count" data-count="MCP">0</span></a>
+    </nav>
+    <p class="sidebar-note">Spring AI questions live in data/questions.json, outside the application JAR.</p>
+</aside>
+<div class="workspace">
+<header class="reader-bar">
+    <a class="button-ghost" href="/">Back to questions</a>
+    <div class="theme-settings">
+        <button class="button" type="button" data-settings>Settings</button>
+        <div class="theme-panel" hidden>
+            <p>Theme</p>
+            <div class="theme-choices">
+                <button class="button" type="button" data-theme-choice="dark">Dark</button>
+                <button class="button" type="button" data-theme-choice="light">Light</button>
+            </div>
+        </div>
+    </div>
+    <button class="button" id="copy-link" type="button">Copy link</button>
+</header>
+<main id="main">
+    <p class="loading-state" id="loading">Loading question…</p>
+    <article class="reader" id="article" hidden>
+        <header class="reader-head">
+            <div class="card-meta">
+                <span class="chip" id="question-category"></span>
+                <span class="chip" id="question-difficulty"></span>
+                <span class="muted" id="question-updated"></span>
+                <div class="chip-row" id="question-tags"></div>
+            </div>
+            <h1 id="question-title"></h1>
+            <div class="reader-actions">
+                <button class="button-primary" id="show-solution" type="button">Show solution</button>
+                <button class="button" id="hide-solution" type="button" hidden>Hide solution</button>
+            </div>
+        </header>
+        <div class="reader-columns">
+            <div class="prose question-pane" id="question-body"></div>
+            <section class="solution" id="solution" hidden>
+                <div class="solution-layout">
+                    <div>
+                        <h2>Solution</h2>
+                        <div class="prose" id="solution-body"></div>
+                    </div>
+                    <div class="code-panel">
+                        <header>
+                            <span id="code-language">Plain Text</span>
+                            <button class="button" id="copy-code" type="button">Copy code</button>
+                        </header>
+                        <pre id="code-block"></pre>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <nav class="pager" aria-label="Adjacent questions">
+            <a id="prev-link" data-label="Previous" href="#">Previous</a>
+            <a id="next-link" data-label="Next" href="#">Next</a>
+        </nav>
+    </article>
+    <section class="reader" id="missing" hidden>
+        <h1>Question not found</h1>
+        <p id="missing-message"></p>
+        <a class="button-primary" href="/">Back to questions</a>
+    </section>
+</main>
+</div>
+</div>
+<div id="toast" class="toast" role="status"></div>
+<script src="/vendor/highlight.min.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/theme.js"></script>
+<script src="/js/question.js"></script>
+</body>
+</html>

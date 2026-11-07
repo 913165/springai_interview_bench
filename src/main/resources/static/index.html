@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spring AI Questions</title>
+    <script>
+        try {
+            var savedTheme = localStorage.getItem("interview.theme");
+            if (savedTheme === "light" || savedTheme === "dark") document.documentElement.dataset.theme = savedTheme;
+        } catch (error) {}
+    </script>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1b33'/%3E%3Cpath d='M9 23V9h5.2a4.2 4.2 0 0 1 0 8.4H9' fill='none' stroke='%2360a5fa' stroke-width='2'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="/vendor/highlight.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-home">
+<a class="skip" href="#main">Skip to content</a>
+<div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <span class="mark">AI</span>
+            <div>
+                <strong>Spring AI</strong>
+                <span>Interview questions</span>
+            </div>
+        </div>
+        <nav aria-label="Library">
+            <button class="nav-link" id="nav-dashboard" type="button">Dashboard</button>
+            <p class="nav-label">Topics</p>
+            <button class="nav-link is-active" type="button" data-topic="">
+                <span>All questions</span><span class="count" data-count="all">0</span>
+            </button>
+            <button class="nav-link" type="button" data-topic="ChatClient">
+                <span>ChatClient</span><span class="count" data-count="ChatClient">0</span>
+            </button>
+            <button class="nav-link" type="button" data-topic="Advisors">
+                <span>Advisors</span><span class="count" data-count="Advisors">0</span>
+            </button>
+            <button class="nav-link" type="button" data-topic="RAG">
+                <span>RAG</span><span class="count" data-count="RAG">0</span>
+            </button>
+            <button class="nav-link" type="button" data-topic="Vector stores">
+                <span>Vector stores</span><span class="count" data-count="Vector stores">0</span>
+            </button>
+            <button class="nav-link" type="button" data-topic="Tools">
+                <span>Tools</span><span class="count" data-count="Tools">0</span>
+            </button>
+            <button class="nav-link" type="button" data-topic="Structured output">
+                <span>Structured output</span><span class="count" data-count="Structured output">0</span>
+            </button>
+            <button class="nav-link" type="button" data-topic="Memory">
+                <span>Memory</span><span class="count" data-count="Memory">0</span>
+            </button>
+            <button class="nav-link" type="button" data-topic="Evaluation">
+                <span>Evaluation</span><span class="count" data-count="Evaluation">0</span>
+            </button>
+            <button class="nav-link" type="button" data-topic="MCP">
+                <span>MCP</span><span class="count" data-count="MCP">0</span>
+            </button>
+        </nav>
+        <p class="sidebar-note">Spring AI questions live in data/questions.json, outside the application JAR.</p>
+    </aside>
+    <div class="scrim" id="scrim" hidden></div>
+    <div class="workspace">
+        <header class="topbar">
+            <button class="icon-button" id="menu-button" type="button">Menu</button>
+            <div class="brand-inline">
+                <p class="eyebrow">Spring AI</p>
+                <h1>Interview questions</h1>
+            </div>
+            <form class="search" id="search-form" role="search">
+                <label class="sr-only" for="search-input">Search questions</label>
+                <input id="search-input" type="search" placeholder="Search title, question, category, or tag" autocomplete="off">
+            </form>
+            <div class="theme-settings">
+                <button class="button" type="button" data-settings>Settings</button>
+                <div class="theme-panel" hidden>
+                    <p>Theme</p>
+                    <div class="theme-choices">
+                        <button class="button" type="button" data-theme-choice="dark">Dark</button>
+                        <button class="button" type="button" data-theme-choice="light">Light</button>
+                    </div>
+                </div>
+            </div>
+            <a class="button-ghost" href="/admin">Admin</a>
+            <button class="button-primary" id="add-button" type="button">Add question</button>
+        </header>
+        <main id="main">
+            <section class="stats" id="overview" aria-label="Library statistics">
+                <article class="stat"><p>Total questions</p><strong id="stat-total">–</strong></article>
+                <article class="stat"><p>Topics</p><strong id="stat-categories">–</strong></article>
+                <article class="stat"><p>Advanced questions</p><strong id="stat-advanced">–</strong></article>
+                <article class="stat"><p>Added in 14 days</p><strong id="stat-recent">–</strong></article>
+            </section>
+            <section class="recent-panel" aria-label="Recently added">
+                <h2>Recently added</h2>
+                <ol id="recent-list"></ol>
+            </section>
+            <div class="toolbar">
+                <div class="filter">
+                    <label for="category-filter">Category</label>
+                    <select id="category-filter"><option value="">All categories</option></select>
+                </div>
+                <div class="filter">
+                    <label for="difficulty-filter">Difficulty</label>
+                    <select id="difficulty-filter">
+                        <option value="">All difficulties</option>
+                        <option>Beginner</option>
+                        <option>Intermediate</option>
+                        <option>Advanced</option>
+                        <option>Principal Architect</option>
+                    </select>
+                </div>
+                <button class="button" id="clear-filters" type="button">Clear filters</button>
+                <p class="result-count" id="result-count"></p>
+            </div>
+            <div id="banner" class="banner" hidden></div>
+            <section id="question-list" class="card-grid" aria-live="polite"></section>
+        </main>
+    </div>
+</div>
+<div id="toast" class="toast" role="status"></div>
+<dialog class="editor-dialog" id="editor-dialog">
+    <form class="dialog-body" id="editor-form">
+        <h2 id="editor-heading">Add question</h2>
+        <p class="lede">Required fields are title, category, difficulty, and the question itself.</p>
+        <div id="editor-error" class="banner" hidden></div>
+        <div class="editor-grid">
+            <div class="field field-wide">
+                <label for="field-title">Question title</label>
+                <input id="field-title" name="title" required maxlength="200">
+            </div>
+            <div class="field">
+                <label for="field-category">Category</label>
+                <select id="field-category" name="category" required></select>
+            </div>
+            <div class="field">
+                <label for="field-difficulty">Difficulty</label>
+                <select id="field-difficulty" name="difficulty" required></select>
+            </div>
+            <div class="field field-wide">
+                <label for="field-tags">Tags</label>
+                <input id="field-tags" name="tags" placeholder="collections, performance, production">
+            </div>
+            <div class="field field-wide">
+                <label for="field-question">Question description</label>
+                <textarea id="field-question" name="question" required></textarea>
+            </div>
+            <div class="field field-wide">
+                <label for="field-solution">Solution</label>
+                <textarea id="field-solution" name="solution"></textarea>
+            </div>
+            <div class="field field-wide">
+                <label for="field-language">Programming language</label>
+                <select id="field-language" name="codeLanguage"></select>
+            </div>
+            <div class="field field-wide">
+                <label for="field-code">Code example</label>
+                <textarea id="field-code" class="code-input" name="codeExample" spellcheck="false"></textarea>
+                <p class="preview-label">Highlighted preview</p>
+                <div class="code-panel"><pre id="code-preview"></pre></div>
+            </div>
+        </div>
+        <div class="dialog-actions">
+            <button class="button" id="editor-cancel" type="button">Cancel</button>
+            <button class="button-primary" id="editor-save" type="submit">Save question</button>
+        </div>
+    </form>
+</dialog>
+<dialog class="access-dialog" id="access-dialog">
+    <div class="dialog-body">
+        <h2>Admin access</h2>
+        <p class="lede">Writes are stored in the JSON file. Enter the admin key from application properties.</p>
+        <div class="field">
+            <label for="access-key">Admin key</label>
+            <input id="access-key" type="password" autocomplete="current-password">
+        </div>
+        <p id="access-error" class="field-error" hidden></p>
+        <div class="dialog-actions">
+            <button class="button" type="button" data-cancel>Cancel</button>
+            <button class="button-primary" type="button" data-accept>Continue</button>
+        </div>
+    </div>
+</dialog>
+<dialog class="confirm-dialog" id="confirm-dialog">
+    <div class="dialog-body">
+        <h2 id="confirm-title">Delete this question?</h2>
+        <p id="confirm-message"></p>
+        <div class="dialog-actions">
+            <button class="button" type="button" data-cancel>Cancel</button>
+            <button class="button-danger" type="button" data-accept>Delete</button>
+        </div>
+    </div>
+</dialog>
+<script src="/vendor/highlight.min.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/editor.js"></script>
+<script src="/js/theme.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin · Spring AI</title>
+    <script>
+        try {
+            var savedTheme = localStorage.getItem("interview.theme");
+            if (savedTheme === "light" || savedTheme === "dark") document.documentElement.dataset.theme = savedTheme;
+        } catch (error) {}
+    </script>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1b33'/%3E%3Cpath d='M9 23V9h5.2a4.2 4.2 0 0 1 0 8.4H9' fill='none' stroke='%2360a5fa' stroke-width='2'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="/vendor/highlight.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-admin">
+<a class="skip" href="#main">Skip to content</a>
+<header class="admin-bar">
+    <a class="reader-brand" href="/"><span class="mark">AI</span> Spring AI</a>
+    <h1>Admin</h1>
+    <div class="theme-settings">
+        <button class="button" type="button" data-settings>Settings</button>
+        <div class="theme-panel" hidden>
+            <p>Theme</p>
+            <div class="theme-choices">
+                <button class="button" type="button" data-theme-choice="dark">Dark</button>
+                <button class="button" type="button" data-theme-choice="light">Light</button>
+            </div>
+        </div>
+    </div>
+    <button class="button" id="lock-button" type="button">Lock</button>
+    <button class="button-primary" id="add-button" type="button">Add question</button>
+</header>
+<main id="main">
+    <section class="gate" id="gate">
+        <h2>Unlock the editor</h2>
+        <p class="lede">The public library is readable without this key. Adding, editing, and deleting questions requires it. The local default is <code>local-admin</code>.</p>
+        <form id="gate-form">
+            <div class="field">
+                <label for="gate-key">Admin key</label>
+                <input id="gate-key" type="password" autocomplete="current-password" required>
+            </div>
+            <p id="gate-error" class="field-error" hidden></p>
+            <button class="button-primary" type="submit">Unlock</button>
+        </form>
+    </section>
+    <section id="workspace" hidden>
+        <div class="admin-tools">
+            <input id="admin-search" type="search" placeholder="Search title, question, category, or tag" aria-label="Search questions">
+            <select id="admin-category" aria-label="Filter by category"><option value="">All categories</option></select>
+            <select id="admin-difficulty" aria-label="Filter by difficulty">
+                <option value="">All difficulties</option>
+            </select>
+        </div>
+        <div id="banner" class="banner" hidden></div>
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Difficulty</th>
+                    <th>Updated</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="admin-body"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+<div id="toast" class="toast" role="status"></div>
+<dialog class="editor-dialog" id="editor-dialog">
+    <form class="dialog-body" id="editor-form">
+        <h2 id="editor-heading">Add question</h2>
+        <p class="lede">The same editor creates a question or updates the one you opened. The id stays the same when you edit.</p>
+        <div id="editor-error" class="banner" hidden></div>
+        <div class="editor-grid">
+            <div class="field field-wide">
+                <label for="field-title">Question title</label>
+                <input id="field-title" required maxlength="200">
+            </div>
+            <div class="field">
+                <label for="field-category">Category</label>
+                <select id="field-category" required></select>
+            </div>
+            <div class="field">
+                <label for="field-difficulty">Difficulty</label>
+                <select id="field-difficulty" required></select>
+            </div>
+            <div class="field field-wide">
+                <label for="field-tags">Tags</label>
+                <input id="field-tags" placeholder="collections, performance, production">
+            </div>
+            <div class="field field-wide">
+                <label for="field-question">Question description</label>
+                <textarea id="field-question" required></textarea>
+            </div>
+            <div class="field field-wide">
+                <label for="field-solution">Solution</label>
+                <textarea id="field-solution"></textarea>
+            </div>
+            <div class="field field-wide">
+                <label for="field-language">Programming language</label>
+                <select id="field-language"></select>
+            </div>
+            <div class="field field-wide">
+                <label for="field-code">Code example</label>
+                <textarea id="field-code" class="code-input" spellcheck="false"></textarea>
+                <p class="preview-label">Highlighted preview</p>
+                <div class="code-panel"><pre id="code-preview"></pre></div>
+            </div>
+        </div>
+        <div class="dialog-actions">
+            <button class="button" id="editor-cancel" type="button">Cancel</button>
+            <button class="button-primary" id="editor-save" type="submit">Save question</button>
+        </div>
+    </form>
+</dialog>
+<dialog class="access-dialog" id="access-dialog">
+    <div class="dialog-body">
+        <h2>Admin access</h2>
+        <p class="lede">Enter the admin key to continue.</p>
+        <div class="field">
+            <label for="access-key">Admin key</label>
+            <input id="access-key" type="password" autocomplete="current-password">
+        </div>
+        <p id="access-error" class="field-error" hidden></p>
+        <div class="dialog-actions">
+            <button class="button" type="button" data-cancel>Cancel</button>
+            <button class="button-primary" type="button" data-accept>Continue</button>
+        </div>
+    </div>
+</dialog>
+<dialog class="confirm-dialog" id="confirm-dialog">
+    <div class="dialog-body">
+        <h2 id="confirm-title">Delete this question?</h2>
+        <p id="confirm-message"></p>
+        <div class="dialog-actions">
+            <button class="button" type="button" data-cancel>Cancel</button>
+            <button class="button-danger" type="button" data-accept>Delete</button>
+        </div>
+    </div>
+</dialog>
+<script src="/vendor/highlight.min.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/editor.js"></script>
+<script src="/js/theme.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>
