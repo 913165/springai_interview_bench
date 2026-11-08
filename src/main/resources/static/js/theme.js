@@ -9,29 +9,18 @@
         var next = theme === "light" ? "light" : "dark";
         document.documentElement.dataset.theme = next;
         localStorage.setItem(STORAGE_KEY, next);
-        document.querySelectorAll("[data-theme-choice]").forEach(function (button) {
-            button.setAttribute("aria-pressed", button.dataset.themeChoice === next ? "true" : "false");
+        var label = next === "light" ? "Switch to dark theme" : "Switch to light theme";
+        document.querySelectorAll("[data-theme-toggle]").forEach(function (button) {
+            button.setAttribute("aria-label", label);
+            button.setAttribute("title", label);
         });
     }
 
     document.addEventListener("DOMContentLoaded", function () {
         applyTheme(currentTheme());
-        document.querySelectorAll("[data-settings]").forEach(function (button) {
-            var panel = button.parentElement.querySelector(".theme-panel");
-            button.addEventListener("click", function (event) {
-                event.stopPropagation();
-                panel.hidden = !panel.hidden;
-            });
-        });
-        document.querySelectorAll("[data-theme-choice]").forEach(function (choice) {
-            choice.addEventListener("click", function (event) {
-                event.stopPropagation();
-                applyTheme(choice.dataset.themeChoice);
-            });
-        });
-        document.addEventListener("click", function () {
-            document.querySelectorAll(".theme-panel").forEach(function (panel) {
-                panel.hidden = true;
+        document.querySelectorAll("[data-theme-toggle]").forEach(function (button) {
+            button.addEventListener("click", function () {
+                applyTheme(currentTheme() === "light" ? "dark" : "light");
             });
         });
     });

@@ -61,6 +61,12 @@
             <button class="nav-link" type="button" data-topic="Deterministic AI">
                 <span>Deterministic AI</span><span class="count" data-count="Deterministic AI">0</span>
             </button>
+            <button class="nav-link" type="button" data-topic="Observability">
+                <span>Observability</span><span class="count" data-count="Observability">0</span>
+            </button>
+            <button class="nav-link" type="button" data-topic="ETL">
+                <span>ETL</span><span class="count" data-count="ETL">0</span>
+            </button>
         </nav>
         <p class="sidebar-note">Spring AI questions live in data/questions.json, outside the application JAR.</p>
     </aside>
@@ -76,18 +82,12 @@
                 <label class="sr-only" for="search-input">Search questions</label>
                 <input id="search-input" type="search" placeholder="Search title, question, category, or tag" autocomplete="off">
             </form>
-            <div class="theme-settings">
-                <button class="button" type="button" data-settings>Settings</button>
-                <div class="theme-panel" hidden>
-                    <p>Theme</p>
-                    <div class="theme-choices">
-                        <button class="button" type="button" data-theme-choice="dark">Dark</button>
-                        <button class="button" type="button" data-theme-choice="light">Light</button>
-                    </div>
-                </div>
-            </div>
             <a class="button-ghost" href="/admin">Admin</a>
             <button class="button-primary" id="add-button" type="button">Add question</button>
+            <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light theme">
+                <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"></path></svg>
+                <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 7 7 0 0 0 21 14.5z"></path></svg>
+            </button>
         </header>
         <main id="main">
             <section class="stats" id="overview" aria-label="Library statistics">

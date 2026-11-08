@@ -16,6 +16,7 @@
     --code-bg: #071422;
     --dialog-bg: #0d1b2e;
     --toast-bg: #123056;
+    --nav: #60a5fa;
     --nav-active: #dbeafe;
     --hover: rgba(255, 255, 255, 0.04);
     --glow-a: rgba(37, 99, 235, 0.38);
@@ -45,6 +46,7 @@ html[data-theme="light"] {
     --code-bg: #f7f9fc;
     --dialog-bg: #ffffff;
     --toast-bg: #ffffff;
+    --nav: #1d4ed8;
     --nav-active: #1e3a8a;
     --hover: rgba(29, 78, 216, 0.08);
     --glow-a: rgba(37, 99, 235, 0.1);
@@ -142,8 +144,9 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.02e
 
 .nav-label {
     margin: 18px 12px 8px;
-    color: var(--faint);
+    color: var(--nav);
     font-size: 0.75rem;
+    font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
 }
@@ -156,14 +159,15 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.02e
     gap: 12px;
     border: 0;
     background: transparent;
-    color: var(--text);
+    color: var(--nav);
+    font-weight: 700;
     text-align: left;
     padding: 10px 12px;
     border-radius: 12px;
     cursor: pointer;
 }
 
-.nav-link:hover, .sidebar button.nav-link:hover { background: var(--hover); }
+.nav-link:hover, .sidebar button.nav-link:hover { background: var(--hover); color: var(--nav-active); }
 .nav-link.is-active { background: rgba(59, 130, 246, 0.18); color: var(--nav-active); }
 
 .count {
@@ -373,23 +377,27 @@ main { padding: 12px 28px 48px; }
 
 .code-panel { background: var(--code-bg); border-radius: 14px; border: 1px solid var(--line); overflow: hidden; }
 
-.theme-settings { position: relative; }
-.theme-panel {
-    position: absolute;
-    right: 0;
-    top: calc(100% + 8px);
-    z-index: 40;
-    width: 220px;
-    padding: 14px;
-    background: var(--dialog-bg);
-    color: var(--text);
+.theme-toggle {
+    width: 42px;
+    height: 42px;
+    margin-left: auto;
+    display: grid;
+    place-items: center;
     border: 1px solid var(--line);
-    border-radius: 14px;
-    box-shadow: var(--shadow);
+    border-radius: 999px;
+    background: var(--bg-raised);
+    color: var(--nav);
+    cursor: pointer;
+    flex: 0 0 auto;
 }
-.theme-panel p { margin: 0 0 8px; color: var(--muted); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; }
-.theme-choices { display: grid; gap: 8px; }
-.theme-choices button[aria-pressed="true"] { border-color: var(--accent); background: rgba(59, 130, 246, 0.14); }
+.theme-toggle:hover { background: var(--hover); color: var(--nav-active); }
+.theme-toggle svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.theme-icon-sun { display: none; }
+.theme-icon-moon { display: block; }
+html[data-theme="light"] .theme-icon-sun { display: block; }
+html[data-theme="light"] .theme-icon-moon { display: none; }
+.page-question .reader-bar .theme-toggle,
+.page-admin .admin-bar .theme-toggle { margin-left: 0; }
 
 html[data-theme="light"] .chip.intermediate { color: #1d4ed8; }
 html[data-theme="light"] .chip.principal { color: #6d28d9; }
@@ -424,7 +432,7 @@ html[data-theme="light"] .hljs-title, html[data-theme="light"] .hljs-section { c
 
 .page-question main { padding: 8px 24px 28px; }
 .page-question .reader { max-width: none; width: 100%; margin: 0; padding: 22px 24px 20px; }
-.sidebar a.nav-link { text-decoration: none; color: var(--text); }
+.sidebar a.nav-link { text-decoration: none; color: var(--nav); font-weight: 700; }
 .sidebar a.brand { text-decoration: none; color: inherit; }
 .reader-head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
 .reader h1 { font-size: clamp(1.7rem, 2.2vw, 2.45rem); line-height: 1.15; margin: 0; max-width: none; }
@@ -457,7 +465,8 @@ html[data-theme="light"] .hljs-title, html[data-theme="light"] .hljs-section { c
 .pager { justify-content: space-between; margin-top: 22px; }
 .pager a[aria-disabled="true"] { opacity: 0.4; pointer-events: none; }
 
-.page-question .reader-bar, .page-admin .admin-bar { justify-content: space-between; }
+.page-question .reader-bar, .page-admin .admin-bar { justify-content: flex-start; }
+.page-question #copy-link, .page-admin .admin-bar h1 { margin-right: auto; }
 .reader-brand { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 650; }
 .reader-brand:hover { text-decoration: none; }
 
